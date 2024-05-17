@@ -46,10 +46,10 @@ public abstract class LinkImpl extends EndpointImpl implements Link
     private Source _remoteSource;
     private Target _target;
     private Target _remoteTarget;
-    private int _queued;
-    private int _credit;
-    private int _unsettled;
-    private int _drained;
+    private volatile int _queued;
+    private volatile int _credit;
+    private volatile int _unsettled;
+    private volatile int _drained;
     private UnsignedLong _maxMessageSize;
     private UnsignedLong _remoteMaxMessageSize;
 
@@ -266,32 +266,38 @@ public abstract class LinkImpl extends EndpointImpl implements Link
     @Override
     public int getCredit()
     {
+        System.out.println(this +": getCredit:  (" + _credit + ")");
         return _credit;
     }
 
     public void addCredit(int credit)
     {
         _credit+=credit;
+        System.out.println(this +": addCredit (" + _credit + ")");
     }
 
     public void setCredit(int credit)
     {
         _credit = credit;
+        System.out.println(this +": setCredit:  (" + _credit + ")");
     }
 
     boolean hasCredit()
     {
+        System.out.println(this +": hasCredit:  (" + _credit + ")");
         return _credit > 0;
     }
 
     void incrementCredit()
     {
         _credit++;
+        System.out.println(this +": incrementCredit:  (" + _credit + ")");
     }
 
     void decrementCredit()
     {
         _credit--;
+        System.out.println(this +": decrementCredit:  (" + _credit + ")");
     }
 
     @Override
